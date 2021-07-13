@@ -2,6 +2,7 @@ import React from "react";
 import { Component } from "react";
 import { connect } from "react-redux";
 import formOperations from "../../redux/form/form-operations";
+import selectors from "../../redux/form/contacts-selectors";
 import "./Form.css";
 
 class InputForm extends Component {
@@ -21,9 +22,16 @@ class InputForm extends Component {
     });
   };
   handelSubmit = (e) => {
-    const { name, number } = this.state;
     e.preventDefault();
-    this.props.onSubmit(name, number);
+    const { name, number } = this.state;
+    const { contacts, onSubmit } = this.props;
+
+    contacts.some(
+      (contact) => name.toLowerCase() === contact.name.toLowerCase()
+    )
+      ? alert(`${name} is already in contacts.`)
+      : onSubmit(name, number);
+
     this.reset();
   };
 
@@ -62,8 +70,11 @@ class InputForm extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  contacts: selectors.getAllItems(state),
+});
 const mapDispatchToProps = (dispatch) => ({
   onSubmit: (name, number) => dispatch(formOperations.addContact(name, number)),
 });
 
-export default connect(null, mapDispatchToProps)(InputForm);
+export default connect(mapStateToProps, mapDispatchToProps)(InputForm);

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import formActions from "../../redux/form/form-actions";
 import "./Filter.css";
+import selectors from "../../redux/form/contacts-selectors";
 
 const Filter = ({ onChange, value }) => {
   return (
@@ -24,7 +25,7 @@ const Filter = ({ onChange, value }) => {
 };
 
 const mapStateToProps = (state) => ({
-  value: state.contacts.filter,
+  value: selectors.getFilter(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

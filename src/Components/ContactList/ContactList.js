@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import formOperations from "../../redux/form/form-operations";
+import selectors from "../../redux/form/contacts-selectors";
 import "./ContactList.css";
 
 const ContactList = ({ contacts, onDelete }) => (
@@ -33,15 +34,9 @@ ContactList.propTypes = {
     })
   ).isRequired,
 };
-const mapStateToProps = (state) => {
-  const { filter, items } = state.contacts;
-
-  return {
-    contacts: items.filter(({ name }) =>
-      name.toLowerCase().includes(filter.toLowerCase())
-    ),
-  };
-};
+const mapStateToProps = (state) => ({
+  contacts: selectors.getVisibleContacts(state),
+});
 
 const mapDispatchToProps = (dispatch) => ({
   onDelete: (id) => dispatch(formOperations.deleteContact(id)),

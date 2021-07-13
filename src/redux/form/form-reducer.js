@@ -15,14 +15,7 @@ const {
 } = actions;
 const items = createReducer([], {
   [fetchContactsSuccess]: (state, { payload }) => payload,
-  [addContactSuccess]: (state, { payload }) =>
-    state.some(
-      (someContact) =>
-        someContact.name.toLocaleLowerCase() ===
-        payload.name.toLocaleLowerCase()
-    )
-      ? (alert(`${payload.name} is already in contacts`), state)
-      : [...state, payload],
+  [addContactSuccess]: (state, { payload }) => [...state, payload],
   [deleteContactSuccess]: (state, { payload }) =>
     state.filter(({ id }) => id !== payload),
 });
